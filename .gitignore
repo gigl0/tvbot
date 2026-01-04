@@ -1,0 +1,15 @@
+# File segreti (Token Telegram)
+.env
+
+# Database locale e log
+data/
+*.db
+*.log
+
+# Cache di Python
+__pycache__/
+*.pyc
+
+# Cartelle di sistema/IDE
+.vscode/
+.idea/
