@@ -142,10 +142,15 @@ def job_check_news():
         try:
             feed = feedparser.parse(rss)
             for e in feed.entries[:2]: # Max 2 news per serie
-                if not is_seen_news(e.link):
+                
+                # MODIFICA IMPORTANTE: Usa l'ID (GUID) invece del LINK
+                # Se 'id' esiste nel feed usa quello, altrimenti ripiega sul link
+                guid = e.get('id', e.link)
+                
+                if not is_seen_news(guid):
                     msg = f"📰 <b>News: {s}</b>\n\n<a href='{e.link}'>{e.title}</a>"
                     send_news_telegram(msg)
-                    mark_news_as_seen(e.link)
+                    mark_news_as_seen(guid) # Salviamo il GUID nel DB
                     time.sleep(1) # Rispetto API
         except Exception as e: 
             logger.error(f"Err News {s}: {e}")
