@@ -12,5 +12,7 @@ Gestisce un calendario serie TV con aggiornamenti automatici e notifiche news.
 
 1. Clona il repo:
    ```bash
-   git clone https://github.com/gigl0/tvbot.git
+   git clone https://github.com/gigl0/tvbot
    cd tvbot
+   nano .env
+   nano series.json
