@@ -110,17 +110,26 @@ def send_or_edit_dashboard(text):
         }
         try:
             r = requests.post(edit_url, json=payload, timeout=10)
+            
             if r.status_code == 200:
                 logger.info("Dashboard aggiornata.")
                 return
+            
+            # --- AGGIUNTA FONDAMENTALE ---
+            # Se il messaggio è identico, Telegram dà errore 400. Noi lo ignoriamo.
+            elif r.status_code == 400 and "message is not modified" in r.text:
+                logger.info("Dashboard identica (nessuna modifica necessaria).")
+                return
+            # -----------------------------
+
             else:
                 logger.warning(f"Edit fallito (msg cancellato?): {r.text}")
-                msg_id = None # Resetta ID per crearne uno nuovo
+                msg_id = None # Solo se fallisce davvero resettiamo l'ID
         except Exception as e:
             logger.error(f"Errore edit dashboard: {e}")
             msg_id = None
 
-    # Nuovo Messaggio (CREATE + PIN)
+    # Nuovo Messaggio (CREATE + PIN) - Resto della funzione invariato...
     if not msg_id:
         send_url = f"{base_url}/sendMessage"
         payload = {
