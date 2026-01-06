@@ -8,7 +8,7 @@ import feedparser
 import schedule
 from datetime import datetime
 from dotenv import load_dotenv
-
+from sentry_handler import init_sentry
 # --- CONFIGURAZIONE ---
 load_dotenv()
 
@@ -25,7 +25,19 @@ TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
 TOPIC_NEWS = os.getenv("TOPIC_ID_NEWS")
 TOPIC_RELEASES = os.getenv("TOPIC_ID_RELEASES")
+ERROR_TOPIC = int(os.getenv('TVBOT_TOPIC_ID', 0)) 
+DSN = os.getenv('SENTRY_DSN')
 
+# --- SENTRY ---
+if DSN:
+    init_sentry(
+        dsn=DSN,
+        bot_name="📺 TVBot",
+        telegram_token=TOKEN,
+        chat_id=CHAT_ID,
+        topic_id=ERROR_TOPIC # Manda l'errore nel topic 54
+    )
+    
 # --- DATABASE ---
 def init_db():
     if not os.path.exists(DATA_DIR): os.makedirs(DATA_DIR)
@@ -61,6 +73,15 @@ def set_config(key, value):
     conn.cursor().execute("INSERT OR REPLACE INTO config (key, value) VALUES (?, ?)", (key, str(value)))
     conn.commit()
     conn.close()
+
+TVBOT_TOPIC_ID = os.getenv("TVBOT_TOPIC_ID")
+init_sentry(
+    dsn="LO_STESSO_DSN_DI_PRIMA",
+    bot_name="📺 TVBot",
+    telegram_token="TOKEN_DEL_TVBOT_O_GUARDIAN", # Puoi usare lo stesso bot per notificare!
+    chat_id=-100123456789,
+    topic_id=TVBOT_TOPIC_ID, # <--- Cambia solo questo!
+)
 
 # --- FUNZIONI TELEGRAM ---
 
