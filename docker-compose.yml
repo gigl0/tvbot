@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  tvbot:
+    # Sostituisce "docker build ."
+    build: . 
+    # Nome del container
+    container_name: tvbot
+    # Restart policy
+    restart: unless-stopped
+    # Carica le variabili dal file .env (se presente nella cartella)
+    env_file:
+      - .env
+    # Volumi: Docker Compose gestisce i percorsi relativi correttamente!
+    volumes:
+      - ./data:/app/data
