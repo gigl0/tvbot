@@ -16,3 +16,4 @@ Gestisce un calendario serie TV con aggiornamenti automatici e notifiche news.
    cd tvbot
    nano .env
    nano series.json
+   test
