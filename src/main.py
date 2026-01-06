@@ -74,15 +74,6 @@ def set_config(key, value):
     conn.commit()
     conn.close()
 
-TVBOT_TOPIC_ID = os.getenv("TVBOT_TOPIC_ID")
-init_sentry(
-    dsn="LO_STESSO_DSN_DI_PRIMA",
-    bot_name="📺 TVBot",
-    telegram_token="TOKEN_DEL_TVBOT_O_GUARDIAN", # Puoi usare lo stesso bot per notificare!
-    chat_id=-100123456789,
-    topic_id=TVBOT_TOPIC_ID, # <--- Cambia solo questo!
-)
-
 # --- FUNZIONI TELEGRAM ---
 
 # 1. Funzione Semplice per le NEWS (Topic News)
